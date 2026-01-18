@@ -98,10 +98,11 @@ def process_video(model, device, file_path):
         valid_keypoints = keypoints[idx] # Shape: (N, K, 2)
         
         im_cv2 = frame
-
         annotator.draw_on(im_cv2, valid_keypoints)
-        cv2.imwrite(f"{OUTPUT_NAME}.jpg", im_cv2)  #Write annotated frame to output video otherwise the video file is empty
+        cv2.imwrite(f"{OUTPUT_NAME}.jpg", im_cv2)
 
+        im_cv2 = np.ascontiguousarray(im_cv2)  # Ensure contiguous memory layout for VideoWriter
+        out.write(im_cv2)  # Write annotated frame to output video
 
         frame_count += 1
 
